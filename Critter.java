@@ -91,7 +91,6 @@ public abstract class Critter {
 					iter.remove();
 				}
 			}
-			return null;
 		}
 		// invalid direction
 		if ((direction < 0) || (direction > 7)) {
@@ -526,8 +525,21 @@ public abstract class Critter {
 	public static void displayWorld(Object pane) {
 		// draw world
 		int canvas_width = 750;
-		int canvas_height = 400;
+		int canvas_height = 500;
+		
+		int grid_width = 0;
+		int grid_height = 0;
+		
+		int width_multiplier = canvas_width/Params.world_width;
+		int height_multiplier = canvas_width/Params.world_height;
+		
+		if(width_multiplier > height_multiplier){
+			grid_width = grid_height = height_multiplier;
+		} else {
+			grid_width = grid_height = width_multiplier;
+		}
 
+		//grid_width = grid_height = 25;
 		Canvas canvas = new Canvas(canvas_width, canvas_height);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		gc.setFill(Color.BLACK);
@@ -536,8 +548,7 @@ public abstract class Critter {
 		// iterate through population and draw each Critter on the world
 		int x = 0;
 		int y = 0;
-		int grid_width = 25;
-		int grid_height = 25;
+
 
 		Iterator<Critter> itr = population.iterator();
 		while (itr.hasNext()) {
