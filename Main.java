@@ -95,8 +95,6 @@ public class Main extends Application {
 			public void handle(ActionEvent event) {
 				try {
 					Critter.makeCritter("Algae");
-					Critter.makeCritter("Algae");
-					Critter.makeCritter("Craig");
 					Critter.displayWorld(borderPane);
 				} catch (InvalidCritterException e) {
 					// TODO Auto-generated catch block
