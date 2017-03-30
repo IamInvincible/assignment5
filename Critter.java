@@ -683,14 +683,58 @@ public abstract class Critter {
 	static abstract class TestCritter extends Critter {
 		protected void setEnergy(int new_energy_value) {
 			super.energy = new_energy_value;
+			if (super.energy <= 0) {
+				Iterator<Critter> itr = population.iterator();
+				while (itr.hasNext()) {
+					Critter c = (Critter) itr.next();
+					if (c.critterId == super.critterId) {
+						itr.remove();
+					}
+				}
+				worldMap1[super.y_coord][super.x_coord] -= 1;
+				Iterator<Critter> iter = worldMap2[super.y_coord][super.x_coord].iterator();
+				while (iter.hasNext()) {
+					Critter r = iter.next();
+					if (r.critterId == super.critterId) {
+						iter.remove();
+					}
+				}
+			}
 		}
 
 		protected void setX_coord(int new_x_coord) {
+			worldMap1[super.y_coord][super.x_coord] -= 1;
+			Iterator<Critter> iter = worldMap2[super.y_coord][super.x_coord].iterator();
+			while (iter.hasNext()) {
+				Critter c = iter.next();
+				if (c.critterId == super.critterId) {
+					iter.remove();
+				}
+			}
 			super.x_coord = new_x_coord;
+			worldMap1[super.y_coord][super.x_coord] += 1;
+			if (worldMap2[super.y_coord][super.x_coord] == null) {
+				worldMap2[super.y_coord][super.x_coord] = new java.util.ArrayList<Critter>();
+			}
+			worldMap2[super.y_coord][super.x_coord].add(this);
+
 		}
 
 		protected void setY_coord(int new_y_coord) {
+			worldMap1[super.y_coord][super.x_coord] -= 1;
+			Iterator<Critter> iter = worldMap2[super.y_coord][super.x_coord].iterator();
+			while (iter.hasNext()) {
+				Critter c = iter.next();
+				if (c.critterId == super.critterId) {
+					iter.remove();
+				}
+			}
 			super.y_coord = new_y_coord;
+			worldMap1[super.y_coord][super.x_coord] += 1;
+			if (worldMap2[super.y_coord][super.x_coord] == null) {
+				worldMap2[super.y_coord][super.x_coord] = new java.util.ArrayList<Critter>();
+			}
+			worldMap2[super.y_coord][super.x_coord].add(this);
 		}
 
 		protected int getX_coord() {
