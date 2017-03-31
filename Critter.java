@@ -54,7 +54,6 @@ public abstract class Critter {
 	private static List<Critter> babies = new ArrayList<Critter>();
 
 	private static List<String> critterTypes = new ArrayList<String>();
-	//private static List<Integer> critterTypesNumber = new ArrayList<Integer>();
 
 	private static int[][] worldMap1 = new int[Params.world_height][Params.world_width];
 	private static List<Critter>[][] worldMap2 = new ArrayList[Params.world_height][Params.world_width];
@@ -77,6 +76,7 @@ public abstract class Critter {
 	private boolean isFleeing;
 	private int critterId;
 	private static int idGenerator = 0;
+	private String critterType;
 	// Gets the package name. This assumes that Critter and its subclasses are
 	// all in the same package.
 	static {
@@ -552,12 +552,7 @@ public abstract class Critter {
 		// iterate through population and draw each Critter on the world
 		int x = 0;
 		int y = 0;
-		if (x + grid_width < canvas_width) {
-			x += grid_width;
-		} else {
-			x = 0;
-			y += grid_height;
-		}
+
 		Iterator<Critter> itr = population.iterator();
 		while (itr.hasNext()) {
 			Critter c = itr.next();
@@ -574,6 +569,12 @@ public abstract class Critter {
 				gc.fillRect(x, y, grid_width, grid_height);
 				break;
 			// NEED TO ADD MORE SHAPES
+			}
+			if (x + grid_width < canvas_width) {
+				x += grid_width;
+			} else {
+				x = 0;
+				y += grid_height;
 			}
 			// change everything between later
 		}
@@ -605,6 +606,7 @@ public abstract class Critter {
 				throw new InvalidCritterException(critter_class_name);
 			}
 			Critter newCritter = (Critter) c.newInstance();
+			newCritter.critterType = critter_class_name;
 			newCritter.x_coord = rand.nextInt(Params.world_width);
 			newCritter.y_coord = rand.nextInt(Params.world_height);
 			newCritter.critterId = idGenerator;
@@ -677,6 +679,15 @@ public abstract class Critter {
 	 */
 
 	public static String runStats() {
+		if(critterTypes.isEmpty()){
+			return "";
+		}
+		
+		int[] critterTypeQuantity = new int[critterTypes.size()];
+		Iterator<Critter> populationIterator = population.iterator();
+		Iterator<String> critterTypesIterator = critterTypes.iterator();
+		
+		
 		return "";
 
 	}
