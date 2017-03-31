@@ -42,6 +42,9 @@ public class Main extends Application {
 
 		Button clearWorldButton = new Button("clearWorld");
 		menu.add(clearWorldButton, 0, 1);
+		
+		Button runStatsButton = new Button("runStats");
+		menu.add(runStatsButton, 0, 2);
 
 		Button makeAlgaeButton = new Button("makeAlgae");
 		menu.add(makeAlgaeButton, 1, 0);
@@ -99,6 +102,14 @@ public class Main extends Application {
 			public void handle(ActionEvent event) {
 				Critter.clearWorld();
 				Critter.displayWorld(borderPane);
+			}
+		});
+		
+		runStatsButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event){
+				Critter.runStats();
+				//update later
 			}
 		});
 
