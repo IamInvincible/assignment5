@@ -43,8 +43,8 @@ public class Main extends Application {
 		Button clearWorldButton = new Button("clearWorld");
 		menu.add(clearWorldButton, 0, 1);
 		
-		Button runStatsButton = new Button("runStats");
-		menu.add(runStatsButton, 0, 2);
+		Button runStatsAlgaeButton = new Button("runStatsAlgae");
+		menu.add(runStatsAlgaeButton, 0, 2);
 
 		Button makeAlgaeButton = new Button("makeAlgae");
 		menu.add(makeAlgaeButton, 1, 0);
@@ -84,8 +84,20 @@ public class Main extends Application {
 		Text stats = new Text("Stats");
 		leftBorder.add(stats, 0, 0);
 		
-		Text stats1 = new Text("Stats1");
-		leftBorder.add(stats1, 0, 1);
+		Text algaeStats = new Text();
+		leftBorder.add(algaeStats, 0, 1);
+		
+		Text Critter1Stats = new Text();
+		leftBorder.add(Critter1Stats, 0, 2);
+		
+		Text Critter2Stats = new Text();
+		leftBorder.add(Critter2Stats, 0, 3);
+		
+		Text Critter3Stats = new Text();
+		leftBorder.add(Critter3Stats, 0, 4);
+		
+		Text Critter4Stats = new Text();
+		leftBorder.add(Critter4Stats, 0, 5);
 		
 		borderPane.setLeft(leftBorder);
 		
@@ -94,6 +106,11 @@ public class Main extends Application {
 			@Override
 			public void handle(ActionEvent event) {
 				Critter.displayWorld(borderPane);
+				algaeStats.setText(Critter.runStats("Algae"));
+				Critter1Stats.setText(Critter.runStats("Critter1"));
+				Critter2Stats.setText(Critter.runStats("Critter2"));
+				Critter3Stats.setText(Critter.runStats("Critter3"));
+				Critter4Stats.setText(Critter.runStats("Critter4"));
 			}
 		});
 
@@ -102,13 +119,18 @@ public class Main extends Application {
 			public void handle(ActionEvent event) {
 				Critter.clearWorld();
 				Critter.displayWorld(borderPane);
+				algaeStats.setText(Critter.runStats("Algae"));
+				Critter1Stats.setText(Critter.runStats("Critter1"));
+				Critter2Stats.setText(Critter.runStats("Critter2"));
+				Critter3Stats.setText(Critter.runStats("Critter3"));
+				Critter4Stats.setText(Critter.runStats("Critter4"));
 			}
 		});
 		
-		runStatsButton.setOnAction(new EventHandler<ActionEvent>() {
+		runStatsAlgaeButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event){
-				Critter.runStats();
+				algaeStats.setText(Critter.runStats("Algae"));
 				//update later
 			}
 		});
@@ -119,6 +141,11 @@ public class Main extends Application {
 				try {
 					Critter.makeCritter("Algae");
 					Critter.displayWorld(borderPane);
+					algaeStats.setText(Critter.runStats("Algae"));
+					Critter1Stats.setText(Critter.runStats("Critter1"));
+					Critter2Stats.setText(Critter.runStats("Critter2"));
+					Critter3Stats.setText(Critter.runStats("Critter3"));
+					Critter4Stats.setText(Critter.runStats("Critter4"));
 				} catch (InvalidCritterException e) {
 					// TODO Auto-generated catch block
 				}
@@ -131,6 +158,11 @@ public class Main extends Application {
 				try {
 					Critter.makeCritter("Critter1");
 					Critter.displayWorld(borderPane);
+					algaeStats.setText(Critter.runStats("Algae"));
+					Critter1Stats.setText(Critter.runStats("Critter1"));
+					Critter2Stats.setText(Critter.runStats("Critter2"));
+					Critter3Stats.setText(Critter.runStats("Critter3"));
+					Critter4Stats.setText(Critter.runStats("Critter4"));
 				} catch (InvalidCritterException e) {
 					// TODO Auto-generated catch block
 				}
@@ -143,6 +175,11 @@ public class Main extends Application {
 				try {
 					Critter.makeCritter("Critter2");
 					Critter.displayWorld(borderPane);
+					algaeStats.setText(Critter.runStats("Algae"));
+					Critter1Stats.setText(Critter.runStats("Critter1"));
+					Critter2Stats.setText(Critter.runStats("Critter2"));
+					Critter3Stats.setText(Critter.runStats("Critter3"));
+					Critter4Stats.setText(Critter.runStats("Critter4"));
 				} catch (InvalidCritterException e) {
 					// TODO Auto-generated catch block
 				}
@@ -155,6 +192,11 @@ public class Main extends Application {
 				try {
 					Critter.makeCritter("Critter3");
 					Critter.displayWorld(borderPane);
+					algaeStats.setText(Critter.runStats("Algae"));
+					Critter1Stats.setText(Critter.runStats("Critter1"));
+					Critter2Stats.setText(Critter.runStats("Critter2"));
+					Critter3Stats.setText(Critter.runStats("Critter3"));
+					Critter4Stats.setText(Critter.runStats("Critter4"));
 				} catch (InvalidCritterException e) {
 					// TODO Auto-generated catch block
 				}
@@ -167,6 +209,11 @@ public class Main extends Application {
 				try {
 					Critter.makeCritter("Critter4");
 					Critter.displayWorld(borderPane);
+					algaeStats.setText(Critter.runStats("Algae"));
+					Critter1Stats.setText(Critter.runStats("Critter1"));
+					Critter2Stats.setText(Critter.runStats("Critter2"));
+					Critter3Stats.setText(Critter.runStats("Critter3"));
+					Critter4Stats.setText(Critter.runStats("Critter4"));
 				} catch (InvalidCritterException e) {
 					// TODO Auto-generated catch block
 				}
@@ -178,6 +225,11 @@ public class Main extends Application {
 			public void handle(ActionEvent event) {
 				Critter.worldTimeStep();
 				Critter.displayWorld(borderPane);
+				algaeStats.setText(Critter.runStats("Algae"));
+				Critter1Stats.setText(Critter.runStats("Critter1"));
+				Critter2Stats.setText(Critter.runStats("Critter2"));
+				Critter3Stats.setText(Critter.runStats("Critter3"));
+				Critter4Stats.setText(Critter.runStats("Critter4"));
 			}
 		});
 
@@ -188,6 +240,11 @@ public class Main extends Application {
 					Critter.worldTimeStep();
 				}
 				Critter.displayWorld(borderPane);
+				algaeStats.setText(Critter.runStats("Algae"));
+				Critter1Stats.setText(Critter.runStats("Critter1"));
+				Critter2Stats.setText(Critter.runStats("Critter2"));
+				Critter3Stats.setText(Critter.runStats("Critter3"));
+				Critter4Stats.setText(Critter.runStats("Critter4"));
 			}
 		});
 
@@ -198,6 +255,11 @@ public class Main extends Application {
 					Critter.worldTimeStep();
 				}
 				Critter.displayWorld(borderPane);
+				algaeStats.setText(Critter.runStats("Algae"));
+				Critter1Stats.setText(Critter.runStats("Critter1"));
+				Critter2Stats.setText(Critter.runStats("Critter2"));
+				Critter3Stats.setText(Critter.runStats("Critter3"));
+				Critter4Stats.setText(Critter.runStats("Critter4"));
 			}
 		});
 
@@ -208,6 +270,11 @@ public class Main extends Application {
 					Critter.worldTimeStep();
 				}
 				Critter.displayWorld(borderPane);
+				algaeStats.setText(Critter.runStats("Algae"));
+				Critter1Stats.setText(Critter.runStats("Critter1"));
+				Critter2Stats.setText(Critter.runStats("Critter2"));
+				Critter3Stats.setText(Critter.runStats("Critter3"));
+				Critter4Stats.setText(Critter.runStats("Critter4"));
 			}
 		});
 		

@@ -1,5 +1,6 @@
 package assignment5;
 
+import assignment5.Main;
 import java.util.List;
 
 import assignment5.InvalidCritterException;
@@ -376,6 +377,7 @@ public abstract class Critter {
 			break;
 		}
 		offspring.critterId = idGenerator;
+		offspring.critterType = offspring.getClass().getName();
 		idGenerator++;
 		babies.add(offspring);
 	}
@@ -678,17 +680,22 @@ public abstract class Critter {
 	 * } System.out.println(); }
 	 */
 
-	public static String runStats() {
-		if(critterTypes.isEmpty()){
-			return "";
+	public static String runStats(String critterName) {
+		if (critterTypes.isEmpty()) {
+			return critterName + ": " + 0;
 		}
-		
-		int[] critterTypeQuantity = new int[critterTypes.size()];
+
+		// count the number of occurrences of critterName
+		int counter = 0;
 		Iterator<Critter> populationIterator = population.iterator();
-		Iterator<String> critterTypesIterator = critterTypes.iterator();
-		
-		
-		return "";
+
+		while (populationIterator.hasNext()) {
+			Critter c = populationIterator.next();
+			if ((c.critterType.equals(critterName)) || (c.critterType.equals(myPackage + "." + critterName))) {
+				counter++;
+			}
+		}
+		return critterName + ": " + counter;
 
 	}
 
