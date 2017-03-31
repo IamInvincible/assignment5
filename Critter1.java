@@ -31,12 +31,15 @@ public class Critter1 extends Critter {
 	public boolean fight(String oponent) {
 		// TODO Auto-generated method stub
 		//call reproduce here or in doTimeStep()
-		
 		return true;
 	}
 	@Override
 	public CritterShape viewShape() {
 		// TODO Auto-generated method stub
-		return null;
+		return assignment5.Critter.CritterShape.SQUARE;
+	}
+	@Override
+	public javafx.scene.paint.Color viewColor() {
+		return javafx.scene.paint.Color.BLUE;
 	}
 }

@@ -43,8 +43,20 @@ public class Main extends Application {
 		Button clearWorldButton = new Button("clearWorld");
 		menu.add(clearWorldButton, 0, 1);
 
-		Button makeCritterButton = new Button("makeCritter");
-		menu.add(makeCritterButton, 1, 0);
+		Button makeAlgaeButton = new Button("makeAlgae");
+		menu.add(makeAlgaeButton, 1, 0);
+		
+		Button makeCritter1Button = new Button("makeCritter1");
+		menu.add(makeCritter1Button, 1, 1);
+		
+		Button makeCritter2Button = new Button("makeCritter2");
+		menu.add(makeCritter2Button, 1, 2);
+		
+		Button makeCritter3Button = new Button("makeCritter3");
+		menu.add(makeCritter3Button, 1, 3);
+		
+		Button makeCritter4Button = new Button("makeCritter4");
+		menu.add(makeCritter4Button, 1, 4);
 
 		Button worldTimeStepButton = new Button("worldTimeStep");
 		menu.add(worldTimeStepButton, 2, 0);
@@ -90,11 +102,59 @@ public class Main extends Application {
 			}
 		});
 
-		makeCritterButton.setOnAction(new EventHandler<ActionEvent>() {
+		makeAlgaeButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				try {
 					Critter.makeCritter("Algae");
+					Critter.displayWorld(borderPane);
+				} catch (InvalidCritterException e) {
+					// TODO Auto-generated catch block
+				}
+			}
+		});
+		
+		makeCritter1Button.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					Critter.makeCritter("Critter1");
+					Critter.displayWorld(borderPane);
+				} catch (InvalidCritterException e) {
+					// TODO Auto-generated catch block
+				}
+			}
+		});
+		
+		makeCritter2Button.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					Critter.makeCritter("Critter2");
+					Critter.displayWorld(borderPane);
+				} catch (InvalidCritterException e) {
+					// TODO Auto-generated catch block
+				}
+			}
+		});
+		
+		makeCritter3Button.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					Critter.makeCritter("Critter3");
+					Critter.displayWorld(borderPane);
+				} catch (InvalidCritterException e) {
+					// TODO Auto-generated catch block
+				}
+			}
+		});
+		
+		makeCritter4Button.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					Critter.makeCritter("Critter4");
 					Critter.displayWorld(borderPane);
 				} catch (InvalidCritterException e) {
 					// TODO Auto-generated catch block

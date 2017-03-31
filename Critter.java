@@ -52,7 +52,10 @@ public abstract class Critter {
 	private static List<Critter> population = new ArrayList<Critter>();
 	private static List<Critter> populationForLook = new ArrayList<Critter>();
 	private static List<Critter> babies = new ArrayList<Critter>();
+
 	private static List<String> critterTypes = new ArrayList<String>();
+	//private static List<Integer> critterTypesNumber = new ArrayList<Integer>();
+
 	private static int[][] worldMap1 = new int[Params.world_height][Params.world_width];
 	private static List<Critter>[][] worldMap2 = new ArrayList[Params.world_height][Params.world_width];
 	private static Critter[][] worldMap3 = new Critter[Params.world_height][Params.world_width];
@@ -385,6 +388,7 @@ public abstract class Critter {
 		// Complete this method.
 
 		// Make a copy of the world for the look function
+		populationForLook.clear();
 		Iterator<Critter> itr = population.iterator();
 		while (itr.hasNext()) {
 			populationForLook.add(itr.next());
@@ -526,20 +530,20 @@ public abstract class Critter {
 		// draw world
 		int canvas_width = 750;
 		int canvas_height = 500;
-		
+
 		int grid_width = 0;
 		int grid_height = 0;
-		
-		int width_multiplier = canvas_width/Params.world_width;
-		int height_multiplier = canvas_width/Params.world_height;
-		
-		if(width_multiplier > height_multiplier){
+
+		int width_multiplier = canvas_width / Params.world_width;
+		int height_multiplier = canvas_width / Params.world_height;
+
+		if (width_multiplier > height_multiplier) {
 			grid_width = grid_height = height_multiplier;
 		} else {
 			grid_width = grid_height = width_multiplier;
 		}
 
-		//grid_width = grid_height = 25;
+		// need to base canvas dimensions off of the dimensions of borderPane
 		Canvas canvas = new Canvas(canvas_width, canvas_height);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		gc.setFill(Color.BLACK);
@@ -548,19 +552,28 @@ public abstract class Critter {
 		// iterate through population and draw each Critter on the world
 		int x = 0;
 		int y = 0;
-
-
+		if (x + grid_width < canvas_width) {
+			x += grid_width;
+		} else {
+			x = 0;
+			y += grid_height;
+		}
 		Iterator<Critter> itr = population.iterator();
 		while (itr.hasNext()) {
 			Critter c = itr.next();
-			// change everything between later
-			gc.setFill(Color.BLUE);
-			gc.fillOval(x, y, grid_width, grid_height);
-			if (x + grid_width < canvas_width) {
-				x += grid_width;
-			} else {
-				x = 0;
-				y += grid_height;
+
+			Color color = c.viewColor();
+			gc.setFill(color);
+
+			CritterShape shape = c.viewShape();
+			switch (shape) {
+			case CIRCLE:
+				gc.fillOval(x, y, grid_width, grid_height);
+				break;
+			case SQUARE:
+				gc.fillRect(x, y, grid_width, grid_height);
+				break;
+			// NEED TO ADD MORE SHAPES
 			}
 			// change everything between later
 		}
@@ -615,7 +628,7 @@ public abstract class Critter {
 						repeat = true;
 					}
 				}
-				if(!repeat){
+				if (!repeat) {
 					critterTypes.add(critter_class_name);
 				}
 			}
