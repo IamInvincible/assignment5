@@ -530,20 +530,19 @@ public abstract class Critter {
 
 	public static void displayWorld(Object pane) {
 		// draw world
-		int canvas_width = 750;
-		int canvas_height = 500;
-
-		int grid_width = 0;
-		int grid_height = 0;
-
-		int width_multiplier = canvas_width / Params.world_width;
-		int height_multiplier = canvas_width / Params.world_height;
-
-		if (width_multiplier > height_multiplier) {
-			grid_width = grid_height = height_multiplier;
-		} else {
-			grid_width = grid_height = width_multiplier;
+		double longSide = 0;
+		double unit_length = 0;
+		if(Params.world_width > Params.world_height){
+			longSide = Params.world_width;
+			unit_length = 600/(double)Params.world_width;
 		}
+		else{
+			longSide = Params.world_height;
+			unit_length = 600/(double)Params.world_height;
+		}
+		
+		double canvas_width = unit_length*Params.world_width;
+		double canvas_height = unit_length*Params.world_height;
 
 		// need to base canvas dimensions off of the dimensions of borderPane
 		Canvas canvas = new Canvas(canvas_width, canvas_height);
@@ -552,32 +551,82 @@ public abstract class Critter {
 		gc.fillRect(0, 0, canvas_width, canvas_height);
 
 		// iterate through population and draw each Critter on the world
-		int x = 0;
-		int y = 0;
+		double x = 0;
+		double y = 0;
+		double[] xPoints = new double[20];
+		double[] yPoints = new double[20];
+		int nPoints = 0;
 
 		Iterator<Critter> itr = population.iterator();
 		while (itr.hasNext()) {
 			Critter c = itr.next();
-
+			x = (double)c.x_coord*unit_length;
+			y = (double)c.y_coord*unit_length;
+			
 			Color color = c.viewColor();
 			gc.setFill(color);
 
 			CritterShape shape = c.viewShape();
 			switch (shape) {
 			case CIRCLE:
-				gc.fillOval(x, y, grid_width, grid_height);
+				gc.fillOval(x, y, unit_length, unit_length);
 				break;
 			case SQUARE:
-				gc.fillRect(x, y, grid_width, grid_height);
+				gc.fillRect(x, y, unit_length, unit_length);
 				break;
-			// NEED TO ADD MORE SHAPES
+			case TRIANGLE:
+				xPoints[0] = x + unit_length/2;
+				yPoints[0] = y;
+				xPoints[1] = x;
+				yPoints[1] = y + unit_length;
+				xPoints[2] = x + unit_length;
+				yPoints[2] = y + unit_length;
+				nPoints = 3;
+				gc.fillPolygon(xPoints, yPoints, nPoints);
+				break;
+			case DIAMOND:
+				xPoints[0] = x + unit_length/2;
+				yPoints[0] = y;
+				xPoints[1] = x + unit_length;
+				yPoints[1] = y + unit_length/2;
+				xPoints[2] = x + unit_length/2;
+				yPoints[2] = y + unit_length;
+				xPoints[3] = x;
+				yPoints[3] = y + unit_length/2;
+				nPoints = 4;
+				gc.fillPolygon(xPoints, yPoints, nPoints);
+				break;
+			case STAR:
+				xPoints[0] = x + unit_length*(double)55/120;
+				yPoints[0] = y;
+				xPoints[1] = x + unit_length*(double)67/120;
+				yPoints[1] = y + unit_length*(double)36/120;
+				xPoints[2] = x + unit_length*(double)109/120;
+				yPoints[2] = y + unit_length*(double)36/120;
+				xPoints[3] = x + unit_length*(double)73/120;
+				yPoints[3] = y + unit_length*(double)54/120;
+				xPoints[4] = x + unit_length*(double)83/120;
+				yPoints[4] = y + unit_length*(double)96/120;
+				xPoints[5] = x + unit_length*(double)55/120;
+				yPoints[5] = y + unit_length*(double)72/120;
+				xPoints[6] = x + unit_length*(double)27/120;
+				yPoints[6] = y + unit_length*(double)96/120;
+				xPoints[7] = x + unit_length*(double)37/120;
+				yPoints[7] = y + unit_length*(double)54/120;
+				xPoints[8] = x + unit_length*(double)1/120;
+				yPoints[8] = y + unit_length*(double)36/120;
+				xPoints[9] = x + unit_length*(double)43/120;
+				yPoints[9] = y + unit_length*(double)36/120;
+				nPoints = 10;
+				gc.fillPolygon(xPoints, yPoints, nPoints);
+				break;
 			}
-			if (x + grid_width < canvas_width) {
-				x += grid_width;
+			/*if (x + unit_length < canvas_width) {
+				x += unit_length;
 			} else {
 				x = 0;
-				y += grid_height;
-			}
+				y += unit_length;
+			}*/
 			// change everything between later
 		}
 		((BorderPane) pane).setCenter(canvas);
