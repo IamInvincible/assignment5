@@ -1,3 +1,15 @@
+/* CRITTERS Critter.java
+ * EE422C Project 5 submission by
+ * Jason Fang
+ * jhf649
+ * 16238
+ * Cejay Zhu
+ * cz4723
+ * 16238
+ * Slip days used: 0
+ * Fall 2016
+ */
+
 package assignment5;
 
 import assignment5.Main;
@@ -54,7 +66,7 @@ public abstract class Critter {
 	private static List<Critter> populationForLook = new ArrayList<Critter>();
 	private static List<Critter> babies = new ArrayList<Critter>();
 
-	private static List<String> critterTypes = new ArrayList<String>();
+	//private static List<String> critterTypes = new ArrayList<String>();
 
 	private static int[][] worldMap1 = new int[Params.world_height][Params.world_width];
 	private static List<Critter>[][] worldMap2 = new ArrayList[Params.world_height][Params.world_width];
@@ -77,7 +89,7 @@ public abstract class Critter {
 	private boolean isFleeing;
 	private int critterId;
 	private static int idGenerator = 0;
-	private String critterType;
+	//private String critterType;
 	// Gets the package name. This assumes that Critter and its subclasses are
 	// all in the same package.
 	static {
@@ -377,7 +389,7 @@ public abstract class Critter {
 			break;
 		}
 		offspring.critterId = idGenerator;
-		offspring.critterType = offspring.getClass().getName();
+		//offspring.critterType = offspring.getClass().getName();
 		idGenerator++;
 		babies.add(offspring);
 	}
@@ -657,7 +669,7 @@ public abstract class Critter {
 				throw new InvalidCritterException(critter_class_name);
 			}
 			Critter newCritter = (Critter) c.newInstance();
-			newCritter.critterType = critter_class_name;
+			//newCritter.critterType = critter_class_name;
 			newCritter.x_coord = rand.nextInt(Params.world_width);
 			newCritter.y_coord = rand.nextInt(Params.world_height);
 			newCritter.critterId = idGenerator;
@@ -669,7 +681,8 @@ public abstract class Critter {
 			worldMap2[newCritter.y_coord][newCritter.x_coord].add(newCritter);
 			newCritter.energy = Params.start_energy;
 			population.add(newCritter);
-
+			
+			/*
 			if (critterTypes.isEmpty()) {
 				critterTypes.add(critter_class_name);
 			} else {
@@ -685,6 +698,7 @@ public abstract class Critter {
 					critterTypes.add(critter_class_name);
 				}
 			}
+			*/
 		} catch (ClassNotFoundException e) {
 			throw new InvalidCritterException(critter_class_name);
 		} catch (InstantiationException e) {
@@ -717,22 +731,29 @@ public abstract class Critter {
 	}
 
 	/*
-	 * public static void runStats(List<Critter> critters) { System.out.print(""
-	 * + critters.size() + " critters as follows -- "); java.util.Map<String,
-	 * Integer> critter_count = new java.util.HashMap<String, Integer>(); for
-	 * (Critter crit : critters) { String crit_string = crit.toString(); Integer
-	 * old_count = critter_count.get(crit_string); if (old_count == null) {
-	 * critter_count.put(crit_string, 1); } else {
-	 * critter_count.put(crit_string, old_count.intValue() + 1); } } String
-	 * prefix = ""; for (String s : critter_count.keySet()) {
-	 * System.out.print(prefix + s + ":" + critter_count.get(s)); prefix = ", ";
-	 * } System.out.println(); }
-	 */
+	public static void runStats(List<Critter> critters) {
+		System.out.print("" + critters.size() + " critters as follows -- ");
+		java.util.Map<String, Integer> critter_count = new java.util.HashMap<String, Integer>();
+		for(Critter crit : critters) {
+			String crit_string = crit.toString();
+			Integer old_count = critter_count.get(crit_string);
+			if (old_count == null) {
+				critter_count.put(crit_string, 1);
+			}
+			else {
+				critter_count.put(crit_string, old_count.intValue() + 1);
+			}
+		}
+		String prefix = "";
+		for (String s : critter_count.keySet()) {
+			System.out.print(prefix + s + ":" + critter_count.get(s));
+			prefix = ", ";
+		}
+		System.out.println();
+	}
+	*/
 
 	public static String runStats(String critterName) {
-		if (critterTypes.isEmpty()) {
-			return critterName + ": " + 0;
-		}
 
 		// count the number of occurrences of critterName
 		int counter = 0;
@@ -740,12 +761,15 @@ public abstract class Critter {
 
 		while (populationIterator.hasNext()) {
 			Critter c = populationIterator.next();
-			if ((c.critterType.equals(critterName)) || (c.critterType.equals(myPackage + "." + critterName))) {
-				counter++;
+			try {
+				if(c.getClass().isAssignableFrom(Class.forName(myPackage + "." + critterName))){
+					counter++;
+				}
+			} catch (ClassNotFoundException e) {
+				return null;
 			}
 		}
 		return critterName + ": " + counter;
-
 	}
 
 	/*

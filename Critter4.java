@@ -1,17 +1,17 @@
 /* CRITTERS Critter4.java
- * EE422C Project 4 submission by
- * Replace <...> with your actual data.
+ * EE422C Project 5 submission by
  * Jason Fang
  * jhf649
  * 16238
  * Cejay Zhu
  * cz4723
  * 16238
- * Slip days used: 1
+ * Slip days used: 0
  * Fall 2016
  */
 
 /**Critter4 always tries to reproduce and always tries to fight*/
+
 package assignment5;
 
 public class Critter4 extends Critter {
@@ -35,7 +35,7 @@ public class Critter4 extends Critter {
 	@Override
 	public CritterShape viewShape() {
 		// TODO Auto-generated method stub
-		return assignment5.Critter.CritterShape.CIRCLE;
+		return assignment5.Critter.CritterShape.DIAMOND;
 	}
 	@Override
 	public javafx.scene.paint.Color viewColor() {

@@ -1,16 +1,17 @@
 /* CRITTERS Critter3.java
- * EE422C Project 4 submission by
- * Replace <...> with your actual data.
+ * EE422C Project 5 submission by
  * Jason Fang
  * jhf649
  * 16238
  * Cejay Zhu
  * cz4723
  * 16238
- * Slip days used: 1
+ * Slip days used: 0
  * Fall 2016
  */
-/**Critter 3 always runs in random directions and has a 50% of attempting to fight.*/
+
+/**Critter 3 always runs in random directions and has a 50% of attempting to fight*/
+
 package assignment5;
 
 public class Critter3 extends Critter {
@@ -38,7 +39,7 @@ public class Critter3 extends Critter {
 	@Override
 	public CritterShape viewShape() {
 		// TODO Auto-generated method stub
-		return assignment5.Critter.CritterShape.CIRCLE;
+		return assignment5.Critter.CritterShape.STAR;
 	}
 	
 	@Override

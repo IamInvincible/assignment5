@@ -1,19 +1,40 @@
+/* CRITTERS Main.java
+ * EE422C Project 5 submission by
+ * Jason Fang
+ * jhf649
+ * 16238
+ * Cejay Zhu
+ * cz4723
+ * 16238
+ * Slip days used: 0
+ * Fall 2016
+ */
+
 package assignment5;
 
 import assignment5.Critter;
 import assignment5.InvalidCritterException;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -21,7 +42,13 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-	int counter = 0;
+	
+	Map<String, String> desiredStats = new HashMap<String, String>();
+	ArrayList<String> createdStats = new ArrayList<String>();
+	private static String myPackage;
+	static {
+		myPackage = Critter.class.getPackage().toString().split(" ")[1];
+	}
 
 	public static void main(String[] args) {
 		launch(args);
@@ -29,88 +56,124 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		// you can have panes within panes
 		
 		BorderPane borderPane = new BorderPane();
-		Text title = new Text("Welcome to Critter");
-		borderPane.setTop(title);
+		borderPane.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+		final Text title = new Text("Welcome to Critter");
+		title.setStyle("-fx-font: 24 arial;");
+		GridPane titlePane = new GridPane();
+		GridPane.setConstraints(title, 0, 0);
+		titlePane.getChildren().add(title);
+		titlePane.setAlignment(Pos.CENTER);
+		borderPane.setTop(titlePane);
 
 		//menu
 		GridPane menu = new GridPane();
-		Button displayWorldButton = new Button("displayWorld");
-		menu.add(displayWorldButton, 0, 0);
-
-		Button clearWorldButton = new Button("clearWorld");
-		menu.add(clearWorldButton, 0, 1);
+		menu.setPadding(new Insets(10, 10, 10, 10));
+		menu.setVgap(5);
+		menu.setHgap(5);
 		
-		Button runStatsAlgaeButton = new Button("runStatsAlgae");
-		menu.add(runStatsAlgaeButton, 0, 2);
+		Button displayWorldButton = new Button("Display World");
+		GridPane.setConstraints(displayWorldButton, 0, 0);
+		menu.getChildren().add(displayWorldButton);
 
-		Button makeAlgaeButton = new Button("makeAlgae");
-		menu.add(makeAlgaeButton, 1, 0);
+		Button clearWorldButton = new Button("Clear World");
+		GridPane.setConstraints(clearWorldButton, 0, 1);
+		menu.getChildren().add(clearWorldButton);
 		
-		Button makeCritter1Button = new Button("makeCritter1");
-		menu.add(makeCritter1Button, 1, 1);
+		final TextField makeCritterInput = new TextField();
+		makeCritterInput.setPromptText("Enter a Critter name.");
+		GridPane.setConstraints(makeCritterInput, 0, 2);
+		GridPane.setMargin(makeCritterInput, new Insets(15, 0, 0, 0));
+		menu.getChildren().add(makeCritterInput);
 		
-		Button makeCritter2Button = new Button("makeCritter2");
-		menu.add(makeCritter2Button, 1, 2);
+		final TextField makeCritterNumber = new TextField();
+		makeCritterNumber.setPromptText("#");
+		makeCritterNumber.setPrefWidth(20);
+		GridPane.setConstraints(makeCritterNumber, 1, 2);
+		GridPane.setMargin(makeCritterNumber, new Insets(15, 0, 0, 0));
+		menu.getChildren().add(makeCritterNumber);
 		
-		Button makeCritter3Button = new Button("makeCritter3");
-		menu.add(makeCritter3Button, 1, 3);
+		Button makeCritter = new Button("Create");
+		GridPane.setConstraints(makeCritter, 2, 2);
+		GridPane.setMargin(makeCritter, new Insets(15, 0, 0, 0));
+		menu.getChildren().add(makeCritter);
 		
-		Button makeCritter4Button = new Button("makeCritter4");
-		menu.add(makeCritter4Button, 1, 4);
-
-		Button worldTimeStepButton = new Button("worldTimeStep");
-		menu.add(worldTimeStepButton, 2, 0);
-
-		Button worldTimeStepButton10 = new Button("worldTimeStep10");
-		menu.add(worldTimeStepButton10, 2, 1);
-
-		Button worldTimeStepButton50 = new Button("worldTimeStep50");
-		menu.add(worldTimeStepButton50, 2, 2);
-
-		Button worldTimeStepButton100 = new Button("worldTimeStep100");
-		menu.add(worldTimeStepButton100, 2, 3);
+		Text invalidCritterMessage = new Text("Invalid Critter");
+		invalidCritterMessage.setFill(Color.WHITE);
+		GridPane.setConstraints(invalidCritterMessage, 0, 3);
+		menu.getChildren().add(invalidCritterMessage);
 		
-		Button quitButton = new Button("quit");
-		menu.add(quitButton, 5, 0);
-
-		borderPane.setBottom(menu);
+		final TextField runStatsInput = new TextField();
+		runStatsInput.setPromptText("Enter a Critter name.");
+		GridPane.setConstraints(runStatsInput, 0, 4);
+		menu.getChildren().add(runStatsInput);
 		
-		//left border
+		Button runStats = new Button("Run Stats");
+		GridPane.setConstraints(runStats, 1, 4);
+		menu.getChildren().add(runStats);
+		
+		Text invalidStatsMessage = new Text("Invalid Critter");
+		invalidStatsMessage.setFill(Color.WHITE);
+		GridPane.setConstraints(invalidStatsMessage, 0, 5);
+		menu.getChildren().add(invalidStatsMessage);
+		
+		Button runStatsAll = new Button("Run Stats for All");
+		GridPane.setConstraints(runStatsAll, 0, 6);
+		menu.getChildren().add(runStatsAll);
+		
+		Button worldTimeStep1 = new Button("1 World Time Step");
+		GridPane.setConstraints(worldTimeStep1, 0, 7);
+		GridPane.setMargin(worldTimeStep1, new Insets(15, 0, 0, 0));
+		menu.getChildren().add(worldTimeStep1);
+		
+		Button worldTimeStep10 = new Button("10 World Time Steps");
+		GridPane.setConstraints(worldTimeStep10, 0, 8);
+		menu.getChildren().add(worldTimeStep10);
+		
+		Button worldTimeStep100 = new Button("100 World Time Steps");
+		GridPane.setConstraints(worldTimeStep100, 0, 9);
+		menu.getChildren().add(worldTimeStep100);
+		
+		Button worldTimeStep1000 = new Button("1000 World Time Steps");
+		GridPane.setConstraints(worldTimeStep1000, 0, 10);
+		menu.getChildren().add(worldTimeStep1000);
+		
+		final TextField seedNumber = new TextField();
+		seedNumber.setPromptText("Enter a seed number.");
+		GridPane.setConstraints(seedNumber, 0, 11);
+		GridPane.setMargin(seedNumber, new Insets(15, 0, 0, 0));
+		menu.getChildren().add(seedNumber);
+		
+		Button setSeed = new Button("Set Seed");
+		GridPane.setConstraints(setSeed, 1, 11);
+		GridPane.setMargin(setSeed, new Insets(15, 0, 0, 0));
+		menu.getChildren().add(setSeed);
+		
+		Text currentSeed = new Text("");
+		currentSeed.setFill(Color.GREEN);
+		GridPane.setConstraints(currentSeed, 0, 12);
+		menu.getChildren().add(currentSeed);
+		
+		Button quitButton = new Button("Quit");
+		GridPane.setConstraints(quitButton, 0, 13);
+		GridPane.setMargin(quitButton, new Insets(15, 0, 0, 0));
+		menu.getChildren().add(quitButton);
+		
+		borderPane.setRight(menu);
+		menu.setAlignment(Pos.CENTER);
+		
+		//Left Border
 		GridPane leftBorder = new GridPane();
-		
-		Text stats = new Text("Stats");
-		leftBorder.add(stats, 0, 0);
-		
-		Text algaeStats = new Text();
-		leftBorder.add(algaeStats, 0, 1);
-		
-		Text Critter1Stats = new Text();
-		leftBorder.add(Critter1Stats, 0, 2);
-		
-		Text Critter2Stats = new Text();
-		leftBorder.add(Critter2Stats, 0, 3);
-		
-		Text Critter3Stats = new Text();
-		leftBorder.add(Critter3Stats, 0, 4);
-		
-		Text Critter4Stats = new Text();
-		leftBorder.add(Critter4Stats, 0, 5);
-		
+
 		borderPane.setLeft(leftBorder);
+		leftBorder.setAlignment(Pos.CENTER);
 		
 		//this button is basically useless
 		displayWorldButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				Critter.displayWorld(borderPane);
-				algaeStats.setText(Critter.runStats("Algae"));
-				Critter1Stats.setText(Critter.runStats("Critter1"));
-				Critter2Stats.setText(Critter.runStats("Critter2"));
-				Critter3Stats.setText(Critter.runStats("Critter3"));
-				Critter4Stats.setText(Critter.runStats("Critter4"));
 			}
 		});
 
@@ -119,162 +182,176 @@ public class Main extends Application {
 			public void handle(ActionEvent event) {
 				Critter.clearWorld();
 				Critter.displayWorld(borderPane);
-				algaeStats.setText(Critter.runStats("Algae"));
-				Critter1Stats.setText(Critter.runStats("Critter1"));
-				Critter2Stats.setText(Critter.runStats("Critter2"));
-				Critter3Stats.setText(Critter.runStats("Critter3"));
-				Critter4Stats.setText(Critter.runStats("Critter4"));
 			}
 		});
 		
-		runStatsAlgaeButton.setOnAction(new EventHandler<ActionEvent>() {
+		makeCritter.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				String inputCritter = makeCritterInput.getText();
+				try{
+					invalidCritterMessage.setFill(Color.WHITE);
+					int numCritters = Integer.parseInt(makeCritterNumber.getText());
+					for(int i = 0; i < numCritters; i++){
+						Critter.makeCritter(inputCritter);
+					}
+					Critter.displayWorld(borderPane);
+				}
+				catch(InvalidCritterException e){
+					invalidCritterMessage.setFill(Color.FIREBRICK);
+				}
+			}
+		});
+		
+		runStats.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				String inputCritter = runStatsInput.getText();
+				try{
+					String qualified_critter_class_name = myPackage + "." + inputCritter;
+					Class<?> c = Class.forName(qualified_critter_class_name);
+					boolean validCritter = Critter.class.isAssignableFrom(c);
+					if(!validCritter){
+						invalidStatsMessage.setFill(Color.FIREBRICK);
+						return;
+					}
+					invalidStatsMessage.setFill(Color.WHITE);
+					try {
+						Method method = c.getMethod("runStats", String.class);
+						Object o = method.invoke(null, inputCritter);
+						desiredStats.put(inputCritter, (String)o);
+						for(String e: desiredStats.keySet()){
+							if(createdStats.contains(e)){
+								for(javafx.scene.Node node: leftBorder.getChildren()){
+									if(node instanceof Text){
+										if(((Text) node).getText().split(":")[0].equals(e)){
+											((Text) node).setText(desiredStats.get(e));
+										}
+									}
+								}
+							}
+							else{
+								createdStats.add(e);
+								Text newStats = new Text(desiredStats.get(e));
+								GridPane.setConstraints(newStats, 0, createdStats.size());
+								leftBorder.getChildren().add(newStats);
+							}
+						}
+					} catch (NoSuchMethodException e) {
+						invalidStatsMessage.setFill(Color.FIREBRICK);
+					} catch (SecurityException e) {
+						invalidStatsMessage.setFill(Color.FIREBRICK);
+					} catch (IllegalAccessException e) {
+						invalidStatsMessage.setFill(Color.FIREBRICK);
+					} catch (IllegalArgumentException e) {
+						invalidStatsMessage.setFill(Color.FIREBRICK);
+					} catch (InvocationTargetException e) {
+						invalidStatsMessage.setFill(Color.FIREBRICK);
+					}
+				}
+				catch(ClassNotFoundException e){
+					invalidStatsMessage.setFill(Color.FIREBRICK);
+				}
+			}
+		});
+		
+		runStatsAll.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event){
-				algaeStats.setText(Critter.runStats("Algae"));
-				//update later
-			}
-		});
-
-		makeAlgaeButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				try {
-					Critter.makeCritter("Algae");
-					Critter.displayWorld(borderPane);
-					algaeStats.setText(Critter.runStats("Algae"));
-					Critter1Stats.setText(Critter.runStats("Critter1"));
-					Critter2Stats.setText(Critter.runStats("Critter2"));
-					Critter3Stats.setText(Critter.runStats("Critter3"));
-					Critter4Stats.setText(Critter.runStats("Critter4"));
-				} catch (InvalidCritterException e) {
-					// TODO Auto-generated catch block
+				for(String created: createdStats){
+					String inputCritter = created;
+					try{
+						String qualified_critter_class_name = myPackage + "." + inputCritter;
+						Class<?> c = Class.forName(qualified_critter_class_name);
+						boolean validCritter = Critter.class.isAssignableFrom(c);
+						if(!validCritter){
+							invalidStatsMessage.setFill(Color.FIREBRICK);
+							return;
+						}
+						invalidStatsMessage.setFill(Color.WHITE);
+						try {
+							Method method = c.getMethod("runStats", String.class);
+							Object o = method.invoke(null, inputCritter);
+							desiredStats.put(inputCritter, (String)o);
+							for(String e: desiredStats.keySet()){
+								if(createdStats.contains(e)){
+									for(javafx.scene.Node node: leftBorder.getChildren()){
+										if(node instanceof Text){
+											if(((Text) node).getText().split(":")[0].equals(e)){
+												((Text) node).setText(desiredStats.get(e));
+											}
+										}
+									}
+								}
+								else{
+									createdStats.add(e);
+									Text newStats = new Text(desiredStats.get(e));
+									GridPane.setConstraints(newStats, 0, createdStats.size());
+									leftBorder.getChildren().add(newStats);
+								}
+							}
+						} catch (NoSuchMethodException e) {
+							invalidStatsMessage.setFill(Color.FIREBRICK);
+						} catch (SecurityException e) {
+							invalidStatsMessage.setFill(Color.FIREBRICK);
+						} catch (IllegalAccessException e) {
+							invalidStatsMessage.setFill(Color.FIREBRICK);
+						} catch (IllegalArgumentException e) {
+							invalidStatsMessage.setFill(Color.FIREBRICK);
+						} catch (InvocationTargetException e) {
+							invalidStatsMessage.setFill(Color.FIREBRICK);
+						}
+					}
+					catch(ClassNotFoundException e){
+						invalidStatsMessage.setFill(Color.FIREBRICK);
+					}			
 				}
 			}
 		});
 		
-		makeCritter1Button.setOnAction(new EventHandler<ActionEvent>() {
+		worldTimeStep1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent event) {
-				try {
-					Critter.makeCritter("Critter1");
-					Critter.displayWorld(borderPane);
-					algaeStats.setText(Critter.runStats("Algae"));
-					Critter1Stats.setText(Critter.runStats("Critter1"));
-					Critter2Stats.setText(Critter.runStats("Critter2"));
-					Critter3Stats.setText(Critter.runStats("Critter3"));
-					Critter4Stats.setText(Critter.runStats("Critter4"));
-				} catch (InvalidCritterException e) {
-					// TODO Auto-generated catch block
-				}
-			}
-		});
-		
-		makeCritter2Button.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				try {
-					Critter.makeCritter("Critter2");
-					Critter.displayWorld(borderPane);
-					algaeStats.setText(Critter.runStats("Algae"));
-					Critter1Stats.setText(Critter.runStats("Critter1"));
-					Critter2Stats.setText(Critter.runStats("Critter2"));
-					Critter3Stats.setText(Critter.runStats("Critter3"));
-					Critter4Stats.setText(Critter.runStats("Critter4"));
-				} catch (InvalidCritterException e) {
-					// TODO Auto-generated catch block
-				}
-			}
-		});
-		
-		makeCritter3Button.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				try {
-					Critter.makeCritter("Critter3");
-					Critter.displayWorld(borderPane);
-					algaeStats.setText(Critter.runStats("Algae"));
-					Critter1Stats.setText(Critter.runStats("Critter1"));
-					Critter2Stats.setText(Critter.runStats("Critter2"));
-					Critter3Stats.setText(Critter.runStats("Critter3"));
-					Critter4Stats.setText(Critter.runStats("Critter4"));
-				} catch (InvalidCritterException e) {
-					// TODO Auto-generated catch block
-				}
-			}
-		});
-		
-		makeCritter4Button.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				try {
-					Critter.makeCritter("Critter4");
-					Critter.displayWorld(borderPane);
-					algaeStats.setText(Critter.runStats("Algae"));
-					Critter1Stats.setText(Critter.runStats("Critter1"));
-					Critter2Stats.setText(Critter.runStats("Critter2"));
-					Critter3Stats.setText(Critter.runStats("Critter3"));
-					Critter4Stats.setText(Critter.runStats("Critter4"));
-				} catch (InvalidCritterException e) {
-					// TODO Auto-generated catch block
-				}
-			}
-		});
-
-		worldTimeStepButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
+			public void handle(ActionEvent event){
 				Critter.worldTimeStep();
 				Critter.displayWorld(borderPane);
-				algaeStats.setText(Critter.runStats("Algae"));
-				Critter1Stats.setText(Critter.runStats("Critter1"));
-				Critter2Stats.setText(Critter.runStats("Critter2"));
-				Critter3Stats.setText(Critter.runStats("Critter3"));
-				Critter4Stats.setText(Critter.runStats("Critter4"));
 			}
 		});
-
-		worldTimeStepButton10.setOnAction(new EventHandler<ActionEvent>() {
+		
+		worldTimeStep10.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent event) {
-				for (int i = 0; i < 10; i++) {
+			public void handle(ActionEvent event){
+				for(int i = 0; i < 10; i++){
 					Critter.worldTimeStep();
 				}
 				Critter.displayWorld(borderPane);
-				algaeStats.setText(Critter.runStats("Algae"));
-				Critter1Stats.setText(Critter.runStats("Critter1"));
-				Critter2Stats.setText(Critter.runStats("Critter2"));
-				Critter3Stats.setText(Critter.runStats("Critter3"));
-				Critter4Stats.setText(Critter.runStats("Critter4"));
 			}
 		});
-
-		worldTimeStepButton50.setOnAction(new EventHandler<ActionEvent>() {
+		
+		worldTimeStep100.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent event) {
-				for (int i = 0; i < 50; i++) {
+			public void handle(ActionEvent event){
+				for(int i = 0; i < 100; i++){
 					Critter.worldTimeStep();
 				}
 				Critter.displayWorld(borderPane);
-				algaeStats.setText(Critter.runStats("Algae"));
-				Critter1Stats.setText(Critter.runStats("Critter1"));
-				Critter2Stats.setText(Critter.runStats("Critter2"));
-				Critter3Stats.setText(Critter.runStats("Critter3"));
-				Critter4Stats.setText(Critter.runStats("Critter4"));
 			}
 		});
-
-		worldTimeStepButton100.setOnAction(new EventHandler<ActionEvent>() {
+		
+		worldTimeStep1000.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent event) {
-				for (int i = 0; i < 100; i++) {
+			public void handle(ActionEvent event){
+				for(int i = 0; i < 1000; i++){
 					Critter.worldTimeStep();
 				}
 				Critter.displayWorld(borderPane);
-				algaeStats.setText(Critter.runStats("Algae"));
-				Critter1Stats.setText(Critter.runStats("Critter1"));
-				Critter2Stats.setText(Critter.runStats("Critter2"));
-				Critter3Stats.setText(Critter.runStats("Critter3"));
-				Critter4Stats.setText(Critter.runStats("Critter4"));
+			}
+		});
+		
+		setSeed.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event){
+				Critter.setSeed(Long.parseLong(seedNumber.getText()));
+				currentSeed.setText("Seed set to: " + seedNumber.getText());
 			}
 		});
 		
@@ -286,7 +363,7 @@ public class Main extends Application {
 		});
 
 		primaryStage.setTitle("Critter");
-		primaryStage.setScene(new Scene(borderPane, 1500, 800));
+		primaryStage.setScene(new Scene(borderPane, 1200, 600));
 		primaryStage.show();
 	}
 

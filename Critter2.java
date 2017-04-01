@@ -1,16 +1,17 @@
 /* CRITTERS Critter2.java
- * EE422C Project 4 submission by
- * Replace <...> with your actual data.
+ * EE422C Project 5 submission by
  * Jason Fang
  * jhf649
  * 16238
  * Cejay Zhu
  * cz4723
  * 16238
- * Slip days used: 1
+ * Slip days used: 0
  * Fall 2016
  */
+
 /**Critter 2 never moves and always tries to fight. It calls look when it tries to fight*/
+
 package assignment5;
 
 public class Critter2 extends Critter{
