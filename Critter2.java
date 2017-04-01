@@ -10,7 +10,7 @@
  * Slip days used: 1
  * Fall 2016
  */
-/**Critter 2 never moves and always tries to fight*/
+/**Critter 2 never moves and always tries to fight. It calls look when it tries to fight*/
 package assignment5;
 
 public class Critter2 extends Critter{
@@ -25,6 +25,7 @@ public class Critter2 extends Critter{
 	@Override
 	public boolean fight(String oponent) {
 		// TODO Auto-generated method stub
+		this.look(Critter.getRandomInt(8), false);
 		return true;
 	}
 	@Override

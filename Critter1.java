@@ -11,7 +11,7 @@
  * Fall 2016
  */
 
-/**Critter 1 only walks in random directions and always tries to fight*/
+/**Critter 1 calls look within doTimeStep and only walks in random directions and always tries to fight*/
 
 package assignment5;
 
@@ -24,6 +24,7 @@ public class Critter1 extends Critter {
 	public void doTimeStep() {
 		// TODO Auto-generated method stub
 		//call reproduce here or in fight()
+		this.look(Critter.getRandomInt(8), false);
 		this.walk(Critter.getRandomInt(8));
 	}
 
